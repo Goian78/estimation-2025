@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estimation Immobilière Gratuite</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #D1C2C2 0%, #121111 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #121111 0%, #422728 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .form-content {
+            padding: 40px 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        label .required {
+            color: #e74c3c;
+            margin-left: 4px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #121111;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 40px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #121111 0%, #422728 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message {
+            display: none;
+            background: #d4edda;
+            border: 2px solid #c3e6cb;
+            color: #155724;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .error-message {
+            display: none;
+            background: #f8d7da;
+            border: 2px solid #f5c6cb;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 20px 30px;
+            text-align: center;
+            color: #666;
+            font-size: 13px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 24px;
+            }
+           
+            .form-content {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Estimez bien</h1>
+            <p>Obtenez une estimation de votre bien en quelques minutes</p>
+        </div>
+
+        <div class="form-content">
+            <form id="estimationForm">
+                <div class="form-group">
+                    <label for="nom">Nom complet: <span class="required">*</span></label>
+                    <input type="text" id="nom" name="Nom" required placeholder="Votre nom complet">
+                </div>
+
+                <div class="form-group">
+                    <label for="telephone">Téléphone: <span class="required">*</span></label>
+                    <input type="text" id="telephone" name="Téléphone" required placeholder="06 12 34 56 78" pattern="[0-9\s\+\-\(\)]{10,}">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="Email" placeholder="votre@email.fr">
+                </div>
+
+                <div class="form-group">
+                    <label for="adresse">Adresse: <span class="required">*</span></label>
+                    <input type="text" id="adresse" name="Adresse" required placeholder="15 rue de la Paix">
+                </div>
+
+                <div class="form-group">
+                    <label for="codePostal">Code Postal: <span class="required">*</span></label>
+                    <input type="number" id="codePostal" name="Code Postal" required placeholder="75001" min="1000" max="99999">
+                </div>
+
+                <div class="form-group">
+                    <label for="commune">Commune: <span class="required">*</span></label>
+                    <input type="text" id="commune" name="Commune" required placeholder="Paris">
+                </div>
+
+                <div class="form-group">
+                    <label for="surface">Surface habitable (loi Carrez): <span class="required">*</span></label>
+                    <input type="number" id="surface" name="Surface (m²)" required placeholder="75" min="1" max="10000">
+                </div>
+
+                <div class="form-group">
+                    <label for="typeBien">Type de bien: <span class="required">*</span></label>
+                    <select id="typeBien" name="Type de bien" required>
+                        <option value="">Sélectionnez un type</option>
+                        <option value="Maison">Maison</option>
+                        <option value="Appartement">Appartement</option>
+                        <option value="Terrain">Terrain</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    Obtenir mon estimation gratuite
+                </button>
+
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p style="margin-top: 15px; color: #667eea; font-weight: 600;">Calcul de votre estimation en cours...</p>
+                </div>
+
+                <div class="success-message">
+                    ✅ Votre demande a été envoyée avec succès ! Vous recevrez votre estimation sous peu.
+                </div>
+
+                <div class="error-message">
+                    ❌ Une erreur est survenue. Veuillez réessayer ou nous contacter directement.
+                </div>
+            </form>
+        </div>
+
+        <div class="footer">
+            🔒 Vos données sont sécurisées et confidentielles
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURATION - Remplacez par votre URL webhook n8n
+        const WEBHOOK_URL = 'http://localhost:5678/webhook/estimation-immo-2025';
+
+        const form = document.getElementById('estimationForm');
+        const submitBtn = form.querySelector('.btn-submit');
+        const loadingDiv = form.querySelector('.loading');
+        const successDiv = form.querySelector('.success-message');
+        const errorDiv = form.querySelector('.error-message');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Masquer les messages précédents
+            successDiv.style.display = 'none';
+            errorDiv.style.display = 'none';
+
+            // Afficher le loader
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Envoi en cours...';
+            loadingDiv.style.display = 'block';
+
+            // Récupérer les données du formulaire
+            const formData = new FormData(form);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+
+            try {
+                // Envoyer à n8n
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    // Succès
+                    loadingDiv.style.display = 'none';
+                    successDiv.style.display = 'block';
+                    form.reset();
+                   
+                    // Scroll vers le message
+                    successDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                } else {
+                    throw new Error('Erreur serveur');
+                }
+
+            } catch (error) {
+                console.error('Erreur:', error);
+                loadingDiv.style.display = 'none';
+                errorDiv.style.display = 'block';
+                errorDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Obtenir mon estimation gratuite';
+            }
+        });
+
+        // Validation téléphone en temps réel
+        const telInput = document.getElementById('telephone');
+        telInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/[^\d\s\+\-\(\)]/g, '');
+            e.target.value = value;
+        });
+
+        // Auto-capitalisation du nom de la commune
+        const communeInput = document.getElementById('commune');
+        communeInput.addEventListener('blur', (e) => {
+            e.target.value = e.target.value
+                .split(' ')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                .join(' ');
+        });
+    </script>
+</body>
+</html>
